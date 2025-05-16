@@ -3,7 +3,7 @@ const { Post, User, Comment } = require('../models');
 exports.createPost = async (req, res) => {
   try {
     const { title, content } = req.body;
-    const author_id = req.user.id; // Assuming you're using JWT for authentication
+    const author_id = req.user.id; 
 
     // Create a new post
     const newPost = await Post.create({ title, content, author_id });
@@ -50,15 +50,21 @@ exports.updatePost = async (req, res) => {
   try {
     const postId = req.params.id;
     const { title, content } = req.body;
+    const userId = req.user.id;
+    const userRole = req.user.role;
 
     const post = await Post.findByPk(postId);
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
 
+    // Allow only admin or post owner to update
+    if (post.author_id !== userId) {
+      return res.status(403).json({ message: 'You are not authorized to update this post' });
+    }
+
     post.title = title || post.title;
     post.content = content || post.content;
-
     await post.save();
 
     res.status(200).json({ message: 'Post updated successfully', post });
@@ -69,19 +75,27 @@ exports.updatePost = async (req, res) => {
 };
 
 exports.deletePost = async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.user.id;
+  const userRole = req.user.role;
+
   try {
-    const postId = req.params.id;
-    
     const post = await Post.findByPk(postId);
+
     if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
+      return res.status(404).json({ message: 'Post not found.' });
     }
 
-    await post.destroy();
-    console.log("Deleted post");
-    res.status(200).json({ message: 'Post deleted successfully' });
-  } catch (err) {
-    console.error('Delete Post Error:', err);
-    res.status(500).json({ message: 'Failed to delete post', error: err.message });
+    // If the user is admin or the post author, allow deletion
+    if (userRole === 'admin' || post.author_id === userId) {
+      await post.destroy();
+      return res.status(200).json({ message: 'Post deleted successfully.' });
+    }
+
+    return res.status(403).json({ message: 'You are not authorized to delete this post.' });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error.' });
   }
 };

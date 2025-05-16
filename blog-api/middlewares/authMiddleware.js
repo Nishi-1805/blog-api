@@ -3,7 +3,7 @@ require('dotenv').config();
 const SECRET_KEY = process.env.JWT_SECRET ;
 
 const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization']; // Bearer TOKEN
+  const authHeader = req.headers['authorization']; 
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
@@ -12,7 +12,7 @@ const authenticateToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
-    req.user = { id: decoded.userId };
+    req.user = { id: decoded.userId, role: decoded.role };
     next();
   } catch (err) {
     return res.status(403).json({ message: 'Invalid or expired token' });
