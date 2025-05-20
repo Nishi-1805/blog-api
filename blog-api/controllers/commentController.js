@@ -4,6 +4,7 @@ const { Comment, User, Post } = require('../models');
 exports.createComment = async (req, res) => {
   try {
     const { content, post_id } = req.body;
+     const author_id = req.user.id;
 
     // Ensure post exists
     const post = await Post.findByPk(post_id);
@@ -12,13 +13,12 @@ exports.createComment = async (req, res) => {
     }
 
     // Create the comment
-    const newComment = await Comment.create({
-      content,
-      post_id,
-      author_id: req.user.id, 
-    });
+    const newComment = await Comment.create({ content, post_id, author_id });
 
-    return res.status(201).json(newComment);
+const fullComment = await Comment.findByPk(newComment.id);
+
+return res.status(201).json(fullComment);
+
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Error creating comment' });
@@ -111,7 +111,6 @@ exports.deleteComment = async (req, res) => {
       return res.status(404).json({ message: 'Comment not found' });
     }
 
-    // Admin or the comment author can delete
     if (comment.author_id !== userId && userRole !== 'admin') {
       return res.status(403).json({ message: 'You are not authorized to delete this comment' });
     }

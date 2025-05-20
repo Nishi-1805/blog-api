@@ -6,7 +6,6 @@ const { validatePostCreation, validatePostUpdate } = require('../middlewares/val
 const handleValidationErrors = require('../middlewares/validation/handleValidation');
 const authorizeRoles = require('../middlewares/roleMiddleware');
 
-// Create a post
 router.post(
   '/',
   authenticateToken,
@@ -16,13 +15,10 @@ router.post(
   postController.createPost
 );
 
-// Get all posts
 router.get('/', postController.getAllPosts);
 
-// Get a single post
 router.get('/:id', postController.getPostById);
 
-// Update a post
 router.put(
   '/:id',
   authenticateToken,
@@ -31,7 +27,6 @@ router.put(
   postController.updatePost
 );
 
-// Delete a post
 router.delete('/:id', authenticateToken,authorizeRoles('admin', 'user'), postController.deletePost);
 
 module.exports = router;

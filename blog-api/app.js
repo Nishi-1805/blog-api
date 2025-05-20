@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
-require('dotenv').config();
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+});
 const sequelize = require('./config/database');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postRoutes');
@@ -31,6 +33,8 @@ sequelize.sync({ alter: false }).then(() => {
   console.error('Error syncing database:', err);
 });
 
-app.listen(process.env.SERVER_PORT, () => {
-  console.log(`Server running on port ${process.env.SERVER_PORT}`);
-});
+//app.listen(process.env.SERVER_PORT, () => {
+//  console.log(`Server running on port ${process.env.SERVER_PORT}`);
+//});
+
+module.exports = app;

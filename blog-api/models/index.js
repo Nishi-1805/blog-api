@@ -32,11 +32,25 @@ fs
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+  const { User, Post, Comment } = db;
+
+// User has many Posts
+User.hasMany(Post, { foreignKey: 'author_id', onDelete: 'CASCADE' });
+Post.belongsTo(User, { foreignKey: 'author_id' });
+
+// User has many Comments
+User.hasMany(Comment, { foreignKey: 'author_id', onDelete: 'CASCADE' });
+Comment.belongsTo(User, { foreignKey: 'author_id' });
+
+// Post has many Comments
+Post.hasMany(Comment, { foreignKey: 'post_id', onDelete: 'CASCADE' });
+Comment.belongsTo(Post, { foreignKey: 'post_id' });
+
+//Object.keys(db).forEach(modelName => {
+//  if (db[modelName].associate) {
+//    db[modelName].associate(db);
+//  }
+//});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
