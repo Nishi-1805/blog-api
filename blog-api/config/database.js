@@ -16,6 +16,8 @@ const sequelize = new Sequelize(
     logging: false, 
   }
 );
+console.log('Running in ENV:', process.env.NODE_ENV); 
+
 
 sequelize
   .authenticate()

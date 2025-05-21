@@ -7,13 +7,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'user'
-    }
+     }
+  }, {
+    underscored: true,
   });
 
   User.associate = (models) => {
-    User.hasMany(models.Post, { foreignKey: 'author_id' });
-    User.hasMany(models.Comment, { foreignKey: 'author_id' });
-  };
+  //  User.hasMany(models.Post, { foreignKey: 'author_id' });
+  //  User.hasMany(models.Comment, { foreignKey: 'author_id' });
+    User.hasMany(models.Post, { foreignKey: 'author_id', onDelete: 'CASCADE' });
+    User.hasMany(models.Comment, { foreignKey: 'author_id', onDelete: 'CASCADE' });  
+
+};
 
   return User;
 };

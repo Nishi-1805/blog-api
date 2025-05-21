@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
   res.send('Blog API is running');
 });
 
-sequelize.sync({ alter: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
   console.log('Database connected and tables created');
 }).catch((err) => {
   console.error('Error syncing database:', err);

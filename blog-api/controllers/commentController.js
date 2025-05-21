@@ -5,6 +5,7 @@ exports.createComment = async (req, res) => {
   try {
     const { content, post_id } = req.body;
      const author_id = req.user.id;
+     console.log('req.user:', req.user);
 
     // Ensure post exists
     const post = await Post.findByPk(post_id);
