@@ -5,7 +5,6 @@ exports.createPost = async (req, res) => {
     const { title, content } = req.body;
     const author_id = req.user.id; 
 
-    // Create a new post
     const newPost = await Post.create({ title, content, author_id });
 
     res.status(201).json({ message: 'Post created successfully', post: newPost });
@@ -58,7 +57,6 @@ exports.updatePost = async (req, res) => {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    // Allow only admin or post owner to update
     if (post.author_id !== userId) {
       return res.status(403).json({ message: 'You are not authorized to update this post' });
     }
@@ -86,7 +84,6 @@ exports.deletePost = async (req, res) => {
       return res.status(404).json({ message: 'Post not found.' });
     }
 
-    // If the user is admin or the post author, allow deletion
     if (userRole === 'admin' || post.author_id === userId) {
       await post.destroy();
       return res.status(200).json({ message: 'Post deleted successfully.' });

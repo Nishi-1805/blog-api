@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const swaggerDocs = require('./swagger');
 require('dotenv').config({
   path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
 });
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
+swaggerDocs(app);
 
 app.get('/', (req, res) => {
   res.send('Blog API is running');

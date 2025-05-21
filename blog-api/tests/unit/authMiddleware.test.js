@@ -34,7 +34,7 @@ describe('authenticateToken Middleware', () => {
 
   test('should call next if token is valid', () => {
     req.headers['authorization'] = 'Bearer validtoken';
-    jwt.verify.mockReturnValue({ userId: 1, role: 'user' });
+    jwt.verify.mockReturnValue({ id: 1, role: 'user' });
 
     authenticateToken(req, res, next);
 

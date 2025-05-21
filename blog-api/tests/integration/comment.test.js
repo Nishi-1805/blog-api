@@ -13,7 +13,6 @@ let testComment;
 beforeAll(async () => {
 await setupDatabase();
 
-  // Create a user and generate token for auth
   const hashedPassword = await bcrypt.hash('password123', 10);
   testUser = await User.create({
     username: 'testuser',

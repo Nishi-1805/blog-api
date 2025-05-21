@@ -1,19 +1,16 @@
 const { Comment, User, Post } = require('../models');
 
-// Create a new comment
 exports.createComment = async (req, res) => {
   try {
     const { content, post_id } = req.body;
      const author_id = req.user.id;
      console.log('req.user:', req.user);
 
-    // Ensure post exists
     const post = await Post.findByPk(post_id);
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    // Create the comment
     const newComment = await Comment.create({ content, post_id, author_id });
 
 const fullComment = await Comment.findByPk(newComment.id);
@@ -26,7 +23,6 @@ return res.status(201).json(fullComment);
   }
 };
 
-// Get all comments for a specific post
 exports.getCommentsByPost = async (req, res) => {
   try {
     const { post_id } = req.query;
@@ -51,7 +47,6 @@ exports.getCommentsByPost = async (req, res) => {
   }
 };
 
-// Get a single comment by ID
 exports.getCommentById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -71,25 +66,21 @@ exports.getCommentById = async (req, res) => {
   }
 };
 
-// Update a comment
 exports.updateComment = async (req, res) => {
   try {
     const { id } = req.params;
     const { content } = req.body;
 
-    // Find the comment by ID
     const comment = await Comment.findByPk(id);
 
     if (!comment) {
       return res.status(404).json({ message: 'Comment not found' });
     }
 
-    // Check if the user is the author of the comment
     if (comment.author_id !== req.user.id) {
       return res.status(403).json({ message: 'You are not authorized to update this comment' });
     }
 
-    // Update the comment
     comment.content = content;
     await comment.save();
 
@@ -100,7 +91,6 @@ exports.updateComment = async (req, res) => {
   }
 };
 
-// Delete a comment
 exports.deleteComment = async (req, res) => {
   try {
     const { id } = req.params;

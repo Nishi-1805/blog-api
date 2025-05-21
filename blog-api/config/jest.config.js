@@ -1,8 +1,3 @@
-//module.exports = {
-//  testEnvironment: "node",
-//  verbose: true,
-//};
-
 module.exports = {
   testEnvironment: 'node',
   forceExit: true,

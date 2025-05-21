@@ -19,32 +19,19 @@ const db = {};
 
 fs
   .readdirSync(__dirname)
-  .filter(file => {
-    return (
-      file.indexOf('.') !== 0 &&
-      file !== basename &&
-      file.slice(-3) === '.js' &&
-      file.indexOf('.test.js') === -1
-    );
-  })
+  .filter(file => file !== 'index.js' && file.endsWith('.js'))
+ // .filter(file => {
+ //   return (
+ //     file.indexOf('.') !== 0 &&
+ //     file !== basename &&
+ //     file.slice(-3) === '.js' &&
+ //     file.indexOf('.test.js') === -1
+ //   );
+ // })
   .forEach(file => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
     db[model.name] = model;
   });
-
-//  const { User, Post, Comment } = db;
-
-// User has many Posts
-//User.hasMany(Post, { foreignKey: 'author_id', onDelete: 'CASCADE' });
-//Post.belongsTo(User, { foreignKey: 'author_id' });
-
-// User has many Comments
-//User.hasMany(Comment, { foreignKey: 'author_id', onDelete: 'CASCADE' });
-//Comment.belongsTo(User, { foreignKey: 'author_id' });
-
-// Post has many Comments
-//Post.hasMany(Comment, { foreignKey: 'post_id', onDelete: 'CASCADE' });
-//Comment.belongsTo(Post, { foreignKey: 'post_id' });
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
