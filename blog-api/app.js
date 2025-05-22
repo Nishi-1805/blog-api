@@ -29,11 +29,13 @@ app.get('/', (req, res) => {
   res.send('Blog API is running');
 });
 
-sequelize.sync({ force: true }).then(() => {
-  console.log('Database connected and tables created');
-}).catch((err) => {
-  console.error('Error syncing database:', err);
-});
+if (process.env.NODE_ENV !== 'test') {
+  sequelize.sync().then(() => {
+    console.log('Database connected and tables created (without dropping)');
+  }).catch((err) => {
+    console.error('Error syncing database:', err);
+  });
+}
 
 //app.listen(process.env.SERVER_PORT, () => {
 //  console.log(`Server running on port ${process.env.SERVER_PORT}`);
