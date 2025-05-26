@@ -1,60 +1,65 @@
-📝 Blog API
+# 📝 Blog API
+
 A RESTful API for a blog application that allows users to register, authenticate, create blog posts, and manage comments. It includes role-based access control and is fully tested and documented using Swagger.
 
-  ---
+---
 
-📌 Project Overview
-Project ID: SCR845NGFF
-Duration: 25 days
-Objective: Develop a RESTful API for a blog application with full CRUD operations for posts and comments, user authentication, and role-based access control.
+## 📌 Project Overview
 
-  ---
+- **Project ID:** SCR845NGFF  
+- **Duration:** 25 days  
+- **Objective:** Develop a RESTful API for a blog application with full CRUD operations for posts and comments, user authentication, and role-based access control.
 
-🛠️ Technologies Used
-| Tech | Purpose |
-|------|---------|
-| Node.js | Backend Runtime |
-| Express.js | Web Framework |
-| PostgreSQL | Database |
-| Sequelize | ORM |
-| JWT | Authentication |
-| Jest + Supertest | Testing |
-| Swagger | API Documentation |
+---
 
-  ---
+## 🛠️ Technologies Used
 
-📂 Project Structure
+| Tech            | Purpose                |
+|-----------------|------------------------|
+| Node.js         | Backend Runtime        |
+| Express.js      | Web Framework          |
+| PostgreSQL      | Database               |
+| Sequelize       | ORM                    |
+| JWT             | Authentication         |
+| Jest + Supertest| Testing                |
+| Swagger         | API Documentation      |
+
+---
+
+## 📂 Project Structure
+
 SCR845NGFF
-├──blog-api/
-    ├── controllers/
-    ├── middlewares/
-    ├── models/
-    ├── routes/
-    ├── config/
-    ├── tests/
-    ├── app.js
-    ├── package-lock.json
-    ├── package.json
-    ├── server.js
-    ├── swagger.js
-    └── README.md
-
-  ---
-
-⚙️ Setup Instructions
-Clone the repository:
+├── blog-api/
+│ ├── controllers/
+│ ├── middlewares/
+│ ├── models/
+│ ├── routes/
+│ ├── config/
+│ ├── tests/
+│ ├── app.js
+│ ├── package-lock.json
+│ ├── package.json
+│ ├── server.js
+│ ├── swagger.js
+│ └── README.md
 
 
-git clone https://github.com/Nishi-1805/blog-api.git
+---
+
+## ⚙️ Setup Instructions
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/Nishi-1805/blog-api.git 
 cd blog-api
 
-
-Install dependencies:
+2️⃣ Install dependencies
 npm install
 
+3️⃣ Configure environment variables
+Create a .env file in the root directory:
 
-Configure environment variables:
-Create a .env file in the root directory and add the following:
 SERVER_PORT=4000
 DB_PORT=5432
 DB_HOST=localhost
@@ -63,59 +68,90 @@ DB_PASSWORD=your_db_password
 DB_NAME=blogdb
 JWT_SECRET=your_jwt_secret
 
-
-Start the server:
+4️⃣ Start the server
 npm start
 
+App runs at:
+http://localhost:4000
 
-The server will run on http://localhost:4000.
-
-  ---
 
 
 🔐 Authentication & Roles
-JWT-based login system
+✅ JWT-based login system
 
-Roles: user and admin
+✅ Role-based access: user and admin
 
-Only post/comment authors or admins can modify/delete their content
+✅ Only post/comment authors or admins can modify/delete their own content
+
+⚠️ Note: All newly registered users are assigned the role user by default.
+To grant admin privileges, the user's role must be manually updated in the database (e.g., via pgAdmin or SQL query).
+
 
 
 📬 API Endpoints
 🔐 Auth
-Method	   Endpoint	           Description
-POST	/api/auth/register	Register a new user
-POST	/api/auth/login	    Login and receive JWT
+Method	  Endpoint	            Description
+POST	/api/auth/register	  Register a new user
+POST	/api/auth/login	      Login and receive JWT
 
 📝 Posts
-Method	 Endpoint	           Description
-POST	/api/posts	        Create post (auth required)
-GET	    /api/posts	        Fetch all posts
-GET	    /api/posts/:id	    Get post by ID
-PUT	    /api/posts/:id	    Update post (auth & owner)
-DELETE	/api/posts/:id	    Delete post (auth & owner/admin)
+Method	  Endpoint       	     Description
+POST	   /api/posts	      Create post (auth required)
+GET	     /api/posts	      Fetch all posts
+GET	     /api/posts/:id	  Get post by ID
+PUT	     /api/posts/:id	  Update post (auth & owner)
+DELETE	 /api/posts/:id	  Delete post (auth & owner/admin)
 
 💬 Comments
-Method	  Endpoint	                    Description
-POST	/api/comments	          Create comment (auth required)
-GET	    /api/comments?post_id=1	  Get comments for post
-GET	    /api/comments/:id	      Get comment by ID
-PUT	    /api/comments/:id	      Update comment (auth & owner)
-DELETE	/api/comments/:id	      Delete comment (auth & owner/admin)
+Method     	Endpoint                      	Description
+POST	    /api/comments	             Create comment (auth required)
+GET	      /api/comments?post_id=1	   Get comments for a specific post
+GET	      /api/comments/:id	         Get comment by ID
+PUT	      /api/comments/:id	         Update comment (auth & owner)
+DELETE	  /api/comments/:id	         Delete comment (auth & owner/admin)
 
 
 🚀 Swagger Documentation
-Accessible at:
-
+API documentation is available at:
 http://localhost:4000/api-docs
-Includes all route definitions, request/response formats, and live testing support.
+
+
+Includes:
+Route details
+Request & response schemas
+Live Try-it-out feature
 
 
 🧪 Running Tests
-Run unit and integration tests using:
+This project includes both unit and integration tests using Jest and Supertest.
 
+🧪 Test Environment Setup
+A separate .env.test file is used to define the test database connection and environment variables specifically for testing.
+
+The database defined in .env.test (testDB) is completely isolated from your main app database.
+
+Create a .env.test file in the project root with:
+
+ .env.test
+
+SERVER_PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=testDB
+DB_USER=postgres
+DB_PASSWORD=yourpassword
+JWT_SECRET=your_test_jwt_secret
+
+📦 Running Tests
+Run all tests:
 npm test
-Test environment is configured with a separate database (testDB).
+
+The test DB is automatically synced and cleared.
+Temporary test data (users, posts, comments) is created.
+All functionalities are tested independently and safely.
+
+✅ Ensures tests are reliable and don’t interfere with real application data.
+
 
 
 🧠 Key Features Implemented
@@ -127,15 +163,16 @@ Test environment is configured with a separate database (testDB).
 
 ✅ Input Validation (express-validator)
 
-✅ Swagger API Docs
+✅ Swagger API Docs with live try-out
 
-✅ Unit & Integration Tests
+✅ Unit & Integration Testing
 
-✅ Separate Test DB (.env.test)
+✅ Separate .env.test and testDB for safe testing
 
 
 
 🧾 Example curl Request
+bash
 
 curl -X POST http://localhost:4000/api/auth/register \
   -H "Content-Type: application/json" \
@@ -146,11 +183,11 @@ curl -X POST http://localhost:4000/api/auth/register \
 }'
 
 
-🧑‍💻 Developer
+
+👩‍💻 Developer
 Nishi Mishra
 Backend Developer (Node.js, Express.js, SQL)
-GitHub Profile : https://github.com/Nishi-1805/
-
+GitHub: https://github.com/Nishi-1805
 
 📄 License
 This project is licensed under the MIT License.
